@@ -2,6 +2,7 @@
   --color-btn-primary: #390943;
   --primary-text-color: #333;
   --background-color: #eee;
+  --font-Mukta: "Mukta", sans-serif; /* Assuming this is defined elsewhere or should be here */
 }
 
 html {
@@ -107,6 +108,7 @@ body.menu-active {
   right: 0;
 }
 
+/* --- DESKTOP SUB-MENUS --- */
 .header .menu .sub-menu {
   position: absolute;
   top: 100%;
@@ -117,12 +119,15 @@ body.menu-active {
   box-shadow: 0 0 0.3125rem hsla(0, 0%, 0%, 0.5);
   z-index: 1;
   transform-origin: top;
-  transform: scaleY(0);
-  visibility: hidden;
-  opacity: 0;
+  transform: scaleY(0); /* Hidden by default on desktop */
+  visibility: hidden; /* Hidden by default on desktop */
+  opacity: 0; /* Hidden by default on desktop */
   transition: all 0.3s ease;
   display: block;
   border-radius: 6px;
+  /* Ensure these don't interfere with mobile max-height */
+  max-height: auto; /* Allow content to flow when visible on desktop */
+  overflow: visible; /* Allow content to flow when visible on desktop */
 }
 
 .header .menu .sub-menu li {
@@ -133,7 +138,7 @@ body.menu-active {
   position: relative;
   padding: 0.8rem 1.5rem;
   font-size: 1.6rem;
-  color: var(--color-bg);
+  color: var(--primary-text-color); /* Changed from var(--color-bg) */
   font-family: var(--font-Mukta);
 }
 
@@ -175,11 +180,14 @@ body.menu-active {
   box-shadow: 0 0 0.3125rem hsla(0, 0%, 0%, 0.5);
   z-index: 2;
   transform-origin: left top;
-  transform: scale(0);
-  visibility: hidden;
-  opacity: 0;
+  transform: scale(0); /* Hidden by default on desktop */
+  visibility: hidden; /* Hidden by default on desktop */
+  opacity: 0; /* Hidden by default on desktop */
   transition: all 0.3s ease;
   display: block;
+  /* Ensure these don't interfere with mobile max-height */
+  max-height: auto; /* Allow content to flow when visible on desktop */
+  overflow: visible; /* Allow content to flow when visible on desktop */
 }
 
 .header .menu .sub-menu .sub-menu-left li {
@@ -189,13 +197,16 @@ body.menu-active {
 .header .menu > ul > li:hover > .sub-menu,
 .header .menu .sub-menu > li.dropdown:hover > .sub-menu {
   opacity: 1;
-  transform: scaleY(1);
+  transform: scaleY(1); /* For main sub-menu hover */
   visibility: visible;
 }
 
-.header .menu .sub-menu > li.dropdown:hover > .sub-menu {
-  transform: scale(1);
+.header .menu .sub-menu > li.dropdown:hover > .sub-menu-left { /* Changed selector here */
+  opacity: 1;
+  transform: scale(1); /* For nested sub-menu hover */
+  visibility: visible;
 }
+
 
 .header-right {
   display: none;
@@ -220,6 +231,7 @@ body.menu-active {
   font-family: var(--font-Mukta);
 }
 
+/* --- MOBILE STYLES --- */
 @media (max-width: 1191px) {
   .header {
     padding: 0 2rem;
@@ -289,22 +301,23 @@ body.menu-active {
     transition: transform 0.3s ease;
   }
 
+  /* --- MOBILE SUB-MENUS --- */
   .header .menu .sub-menu {
-    position: static;
+    position: static; /* Important for mobile - stack flow */
     width: 100%;
     padding: 0;
     box-shadow: none;
     background-color: rgba(0, 0, 0, 0.1);
-    transform: none;
-    visibility: visible;
-    opacity: 1;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease-out;
+    transform: none; /* Reset desktop transform */
+    visibility: visible; /* Ensure visible for max-height transition */
+    opacity: 1; /* Ensure visible for max-height transition */
+    max-height: 0; /* Hidden by default on mobile */
+    overflow: hidden; /* Hide overflow content */
+    transition: max-height 0.3s ease-out; /* Only transition max-height */
   }
 
   .header .menu .sub-menu.active {
-    max-height: 500px;
+    max-height: 500px; /* Adjust this value if your content is taller */
   }
 
   .header .menu .sub-menu a {
@@ -325,33 +338,38 @@ body.menu-active {
     color: #fff;
   }
 
+  /* --- MOBILE NESTED SUB-MENUS (.sub-menu-left) --- */
   .header .menu .sub-menu .sub-menu-left {
-    position: static;
+    position: static; /* Important for mobile - stack flow */
     width: 100%;
     padding: 0;
     box-shadow: none;
     background-color: rgba(0, 0, 0, 0.2);
-    transform: none;
-    visibility: visible;
-    opacity: 1;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease-out;
+    transform: none; /* Reset desktop transform */
+    visibility: visible; /* Ensure visible for max-height transition */
+    opacity: 1; /* Ensure visible for max-height transition */
+    max-height: 0; /* Hidden by default on mobile */
+    overflow: hidden; /* Hide overflow content */
+    transition: max-height 0.3s ease-out; /* Only transition max-height */
   }
 
   .header .menu .sub-menu .sub-menu-left.active {
-    max-height: 500px;
+    max-height: 500px; /* Adjust this value if your content is taller */
   }
 
   .header .menu .sub-menu .sub-menu-left a {
     padding-left: 4rem;
   }
 
+  /* Remove hover effects for mobile to avoid conflicts */
   .header .menu > ul > li:hover > .sub-menu,
-  .header .menu .sub-menu > li.dropdown:hover > .sub-menu {
-    opacity: 1;
-    transform: none;
-    visibility: visible;
+  .header .menu .sub-menu > li.dropdown:hover > .sub-menu,
+  .header .menu .sub-menu > li.dropdown:hover > .sub-menu-left { /* Added this for clarity */
+    /* Remove or comment out any properties that might interfere with max-height on mobile */
+    /* opacity: 1; */
+    /* transform: none; */
+    /* visibility: visible; */
+    /* These properties are now controlled by the active class and max-height logic for mobile */
   }
 
   .header-right {
@@ -393,7 +411,7 @@ body.menu-active {
   }
 
   .header .menu .contact-button {
-    display: none;
+    display: none; /* Hide for mobile menu initially, then display block in JS based on design */
     width: auto;
     margin-left: 0;
     padding: 1.5rem 2rem;
