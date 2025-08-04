@@ -98,7 +98,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const dropdowns = document.querySelectorAll(".menu .dropdown > a");
   dropdowns.forEach((dropdown) => {
     dropdown.addEventListener("click", function (e) {
-      // Only prevent default and handle dropdown if on mobile breakpoint
       if (window.innerWidth <= 1191) {
         e.preventDefault();
         const parentLi = this.parentElement;
