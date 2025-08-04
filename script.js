@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
     menu.classList.remove("active");
     body.classList.remove("menu-active");
     html.classList.remove("menu-active");
-    openMenuBtn.classList.remove("active");
+    openMenuBtn.classList.remove("active")
   });
 
   // Handle dropdowns for mobile
