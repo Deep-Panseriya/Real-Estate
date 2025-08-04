@@ -3,7 +3,7 @@
 /**************************/
 
 .section-hero {
-  background-color: #390943;
+  background-color: rebeccapurple;
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
 }
