@@ -56,233 +56,168 @@
 ///////////////////////////////////////////////////////////
 // Fixing flexbox gap property missing in some Safari versions
 function checkFlexGap() {
-  var flex = document.createElement("div");
-  flex.style.display = "flex";
-  flex.style.flexDirection = "column";
-  flex.style.rowGap = "1px";
+    var flex = document.createElement("div");
+    flex.style.display = "flex";
+    flex.style.flexDirection = "column";
+    flex.style.rowGap = "1px";
 
-  flex.appendChild(document.createElement("div"));
-  flex.appendChild(document.createElement("div"));
+    flex.appendChild(document.createElement("div"));
+    flex.appendChild(document.createElement("div"));
 
-  document.body.appendChild(flex);
-  var isSupported = flex.scrollHeight === 1;
-  flex.parentNode.removeChild(flex);
+    document.body.appendChild(flex);
+    var isSupported = flex.scrollHeight === 1;
+    flex.parentNode.removeChild(flex);
 
-  if (!isSupported) document.body.classList.add("no-flexbox-gap");
+    if (!isSupported) document.body.classList.add("no-flexbox-gap");
 }
 checkFlexGap();
 
 /////////////////////////////////////////////////////
-document.addEventListener("DOMContentLoaded", function () {
-  const openMenuBtn = document.querySelector(".open-menu-btn");
-  const closeMenuBtn = document.querySelector(".close-menu-btn");
-  const menu = document.querySelector(".menu");
-  const body = document.body;
-  const html = document.documentElement;
+////!SECTION-- NavBar Js
+const openMenuBtn = document.getElementById('openMenuBtn');
+const closeMenuBtn = document.getElementById('closeMenuBtn');
+const mainMenu = document.getElementById('mainMenu');
+const body = document.body;
 
-  openMenuBtn.addEventListener("click", () => {
-    menu.classList.add("active");
-    body.classList.add("menu-active");
-    html.classList.add("menu-active");
-    openMenuBtn.classList.add("active");
-  });
+const dropdowns = document.querySelectorAll('.header .menu .dropdown');
 
-  closeMenuBtn.addEventListener("click", () => {
-    menu.classList.remove("active");
-    body.classList.remove("menu-active");
-    html.classList.remove("menu-active");
-    openMenuBtn.classList.remove("active")
-  });
+function toggleMainMenu() {
+    mainMenu.classList.toggle('active');
+    openMenuBtn.classList.toggle('active');
+    body.classList.toggle('menu-active');
+    document.documentElement.classList.toggle('menu-active');
+}
 
-  // Handle dropdowns for mobile
-  const dropdowns = document.querySelectorAll(".menu .dropdown > a");
-  dropdowns.forEach((dropdown) => {
-    dropdown.addEventListener("click", function (e) {
-      if (window.innerWidth <= 1191) {
-        e.preventDefault();
-        const parentLi = this.parentElement;
-        const subMenu = parentLi.querySelector(".sub-menu");
-        const dropdownIcon = this.querySelector(".dropdown-icon");
+openMenuBtn.addEventListener('click', toggleMainMenu);
+closeMenuBtn.addEventListener('click', toggleMainMenu);
 
+function closeAllDropdowns() {
+    dropdowns.forEach(dropdown => {
+        dropdown.classList.remove('active');
+        const subMenu = dropdown.querySelector('.sub-menu');
         if (subMenu) {
-          // Close other open sub-menus at the same level
-          parentLi.parentElement
-            .querySelectorAll(".sub-menu.active")
-            .forEach((openSubMenu) => {
-              if (openSubMenu !== subMenu) {
-                openSubMenu.classList.remove("active");
-                openSubMenu.style.maxHeight = "0";
-                const siblingDropdownIcon =
-                  openSubMenu.parentElement.querySelector(".dropdown-icon");
-                if (siblingDropdownIcon) {
-                  siblingDropdownIcon.style.transform = "rotate(0deg)";
-                }
-              }
-            });
-
-          // Toggle current sub-menu
-          subMenu.classList.toggle("active");
-          if (subMenu.classList.contains("active")) {
-            subMenu.style.maxHeight = subMenu.scrollHeight + "px";
-            if (dropdownIcon) {
-              dropdownIcon.style.transform = "rotate(90deg)";
-            }
-          } else {
-            subMenu.style.maxHeight = "0";
-            if (dropdownIcon) {
-              dropdownIcon.style.transform = "rotate(0deg)";
-            }
-          }
+            subMenu.classList.remove('active');
         }
-      }
-    });
-  });
-
-  // Handle nested dropdowns for mobile
-  const nestedDropdowns = document.querySelectorAll(
-    ".menu .sub-menu .dropdown > a"
-  );
-  nestedDropdowns.forEach((dropdown) => {
-    dropdown.addEventListener("click", function (e) {
-      if (window.innerWidth <= 1191) {
-        // Updated breakpoint
-        e.preventDefault();
-        const parentLi = this.parentElement;
-        const subMenu = parentLi.querySelector(".sub-menu-left");
-        const dropdownIcon = this.querySelector(".dropdown-icon");
-
-        if (subMenu) {
-          // Close other open nested sub-menus at the same level
-          parentLi.parentElement
-            .querySelectorAll(".sub-menu-left.active")
-            .forEach((openSubMenu) => {
-              if (openSubMenu !== subMenu) {
-                openSubMenu.classList.remove("active");
-                openSubMenu.style.maxHeight = "0";
-                const siblingDropdownIcon =
-                  openSubMenu.parentElement.querySelector(".dropdown-icon");
-                if (siblingDropdownIcon) {
-                  siblingDropdownIcon.style.transform = "rotate(0deg)";
-                }
-              }
-            });
-
-          // Toggle current nested sub-menu
-          subMenu.classList.toggle("active");
-          if (subMenu.classList.contains("active")) {
-            subMenu.style.maxHeight = subMenu.scrollHeight + "px";
-            if (dropdownIcon) {
-              dropdownIcon.style.transform = "rotate(90deg)";
-            }
-          } else {
-            subMenu.style.maxHeight = "0";
-            if (dropdownIcon) {
-              dropdownIcon.style.transform = "rotate(0deg)";
-            }
-          }
+        const dropdownIcon = dropdown.querySelector('.dropdown-icon');
+        if (dropdownIcon) {
+            dropdownIcon.style.transform = 'rotate(0deg)';
         }
-      }
     });
-  });
+}
 
-  // Close menu and reset states when window is resized to desktop size
-  window.addEventListener("resize", () => {
-    if (window.innerWidth > 1191) {
-      // Updated breakpoint
-      menu.classList.remove("active");
-      body.classList.remove("menu-active");
-      html.classList.remove("menu-active");
-      openMenuBtn.classList.remove("active");
-      // Reset mobile dropdown states
-      document.querySelectorAll(".sub-menu.active").forEach((subMenu) => {
-        subMenu.classList.remove("active");
-        subMenu.style.maxHeight = "auto"; // Allow content to flow naturally on desktop
-      });
-      document.querySelectorAll(".dropdown-icon").forEach((icon) => {
-        icon.style.transform = "rotate(0deg)";
-      });
+dropdowns.forEach(dropdown => {
+    const dropdownLink = dropdown.querySelector('a');
+    const subMenu = dropdown.querySelector('.sub-menu');
+    const dropdownIcon = dropdownLink.querySelector('.dropdown-icon');
+
+    if (subMenu) {
+        dropdownLink.addEventListener('click', (event) => {
+            if (window.innerWidth <= 1191) {
+                event.preventDefault();
+
+                const isActive = dropdown.classList.contains('active');
+
+                const parentUl = dropdown.closest('ul');
+                if (parentUl) {
+                    Array.from(parentUl.children).forEach(siblingLi => {
+                        if (siblingLi !== dropdown && siblingLi.classList.contains('dropdown') && siblingLi.classList.contains('active')) {
+                            siblingLi.classList.remove('active');
+                            const siblingSubMenu = siblingLi.querySelector('.sub-menu');
+                            if (siblingSubMenu) {
+                                siblingSubMenu.classList.remove('active');
+                            }
+                            const siblingIcon = siblingLi.querySelector('.dropdown-icon');
+                            if (siblingIcon) {
+                                siblingIcon.style.transform = 'rotate(0deg)';
+                            }
+                        }
+                    });
+                }
+
+                dropdown.classList.toggle('active', !isActive);
+                subMenu.classList.toggle('active', !isActive);
+                if (dropdownIcon) {
+                    dropdownIcon.style.transform = !isActive ? 'rotate(180deg)' : 'rotate(0deg)';
+                }
+            }
+        });
     }
-  });
 });
+
+window.addEventListener('resize', () => {
+    if (window.innerWidth > 1191) {
+        mainMenu.classList.remove('active');
+        openMenuBtn.classList.remove('active');
+        body.classList.remove('menu-active');
+        document.documentElement.classList.remove('menu-active');
+
+        closeAllDropdowns();
+    }
+});
+
 
 // Testimonial carousel functionality with auto-scroll
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Testimonial carousel functionality with auto-scroll
-  const slidesContainer = document.getElementById("testimonialsGrid");
-  const slides = document.querySelectorAll(".testimonial-card");
-  const prevBtn = document.getElementById("prev-btn");
-  const nextBtn = document.getElementById("next-btn");
+    const slidesContainer = document.getElementById("testimonialsGrid");
+    const slides = slidesContainer?.querySelectorAll(".testimonial-card") || [];
+    const prevBtn = document.getElementById("prev-btn");
+    const nextBtn = document.getElementById("next-btn");
 
-  let currentSlideIndex = 0;
-  const totalSlides = slides ? slides.length : 0;
-  let autoPlayInterval;
-  const autoPlayDelay = 3000;
+    let currentSlideIndex = 0;
+    const totalSlides = slides.length;
+    let autoPlayInterval;
+    const autoPlayDelay = 3000;
 
-  function showSlide(index) {
-    if (totalSlides === 0) {
-      return;
+    function getGapValue(container) {
+        const style = window.getComputedStyle(container);
+        const gap = parseFloat(style.getPropertyValue("gap")) || 0;
+        return gap;
     }
 
-    let targetIndex = index;
+    function showSlide(index) {
+        if (!slidesContainer || totalSlides === 0) return;
 
-    if (targetIndex >= totalSlides) {
-      targetIndex = 0;
-    } else if (targetIndex < 0) {
-      targetIndex = totalSlides - 1;
+        currentSlideIndex = (index + totalSlides) % totalSlides; // wrap index
+
+        const gap = getGapValue(slidesContainer);
+        const cardWidth = slides[0]?.offsetWidth || 0;
+        const scrollPosition = currentSlideIndex * (cardWidth + gap);
+
+        slidesContainer.scrollTo({
+            left: scrollPosition,
+            behavior: "smooth",
+        });
     }
 
-    currentSlideIndex = targetIndex;
+    function startAutoPlay() {
+        if (totalSlides <= 1) return;
 
-    const computedStyle = window.getComputedStyle(slidesContainer);
-    const gapString = computedStyle.getPropertyValue("gap");
-    const gap = parseFloat(gapString) || 0;
-
-    const cardWidth = slides[0] ? slides[0].offsetWidth : 0;
-    const scrollPosition = currentSlideIndex * (cardWidth + gap);
-
-    slidesContainer.scrollTo({
-      left: scrollPosition,
-      behavior: "smooth",
-    });
-  }
-
-  function startAutoPlay() {
-    if (totalSlides <= 1) {
-      return;
+        stopAutoPlay(); // Reset first
+        autoPlayInterval = setInterval(() => {
+            showSlide(currentSlideIndex + 1);
+        }, autoPlayDelay);
     }
-    stopAutoPlay();
-    autoPlayInterval = setInterval(() => {
-      showSlide(currentSlideIndex + 1);
-    }, autoPlayDelay);
-  }
 
-  function stopAutoPlay() {
-    clearInterval(autoPlayInterval);
-  }
+    function stopAutoPlay() {
+        clearInterval(autoPlayInterval);
+    }
 
-  if (nextBtn) {
-    nextBtn.addEventListener("click", function () {
-      stopAutoPlay();
-      showSlide(currentSlideIndex + 1);
-      setTimeout(startAutoPlay, 1000);
+    function handleNavigationClick(direction) {
+        stopAutoPlay();
+        showSlide(currentSlideIndex + direction);
+        setTimeout(startAutoPlay, 1000);
+    }
+
+    prevBtn?.addEventListener("click", () => handleNavigationClick(-1));
+    nextBtn?.addEventListener("click", () => handleNavigationClick(1));
+
+    window.addEventListener("resize", () => {
+        showSlide(currentSlideIndex);
     });
-  }
 
-  if (prevBtn) {
-    prevBtn.addEventListener("click", function () {
-      stopAutoPlay();
-      showSlide(currentSlideIndex - 1);
-      setTimeout(startAutoPlay, 1000);
-    });
-  }
-
-  showSlide(currentSlideIndex);
-  startAutoPlay();
-
-  window.addEventListener("resize", () => {
     showSlide(currentSlideIndex);
-  });
+    startAutoPlay();
 });
 
 ///////////////////////////////////////////////////////////
@@ -290,322 +225,322 @@ document.addEventListener("DOMContentLoaded", () => {
 let amortizationChart;
 
 document.addEventListener("DOMContentLoaded", () => {
-  const purchaseAmountInput = document.getElementById("purchaseAmount");
-  const downPaymentInput = document.getElementById("downPayment");
-  const interestRateInput = document.getElementById("interestRate");
-  const mortgageTermInput = document.getElementById("mortgageTerm");
-  const paymentIntervalSelect = document.getElementById("paymentInterval");
-  const calculateBtn = document.getElementById("calculateBtn");
+    const purchaseAmountInput = document.getElementById("purchaseAmount");
+    const downPaymentInput = document.getElementById("downPayment");
+    const interestRateInput = document.getElementById("interestRate");
+    const mortgageTermInput = document.getElementById("mortgageTerm");
+    const paymentIntervalSelect = document.getElementById("paymentInterval");
+    const calculateBtn = document.getElementById("calculateBtn");
 
-  const displayLoanAmount = document.getElementById("displayLoanAmount");
-  const displayMonthlyPayment = document.getElementById(
-    "displayMonthlyPayment"
-  );
-  const displayInterestRate = document.getElementById("displayInterestRate");
-  const displayTotalPayments = document.getElementById("displayTotalPayments");
-  const displayMortgageTerm = document.getElementById("displayMortgageTerm");
-  const displayTotalAmountPaid = document.getElementById(
-    "displayTotalAmountPaid"
-  );
-  const displayTotalInterestPaid = document.getElementById(
-    "displayTotalInterestPaid"
-  );
+    const displayLoanAmount = document.getElementById("displayLoanAmount");
+    const displayMonthlyPayment = document.getElementById(
+        "displayMonthlyPayment"
+    );
+    const displayInterestRate = document.getElementById("displayInterestRate");
+    const displayTotalPayments = document.getElementById("displayTotalPayments");
+    const displayMortgageTerm = document.getElementById("displayMortgageTerm");
+    const displayTotalAmountPaid = document.getElementById(
+        "displayTotalAmountPaid"
+    );
+    const displayTotalInterestPaid = document.getElementById(
+        "displayTotalInterestPaid"
+    );
 
-  const ctx = document.getElementById("amortizationChart").getContext("2d");
+    const ctx = document.getElementById("amortizationChart").getContext("2d");
 
-  function calculateMortgage() {
-    const purchaseAmount = parseFloat(purchaseAmountInput.value);
-    const downPayment = parseFloat(downPaymentInput.value);
-    let annualInterestRate = parseFloat(interestRateInput.value) / 100;
-    const mortgageTermYears = parseFloat(mortgageTermInput.value);
-    const paymentInterval = paymentIntervalSelect.value;
+    function calculateMortgage() {
+        const purchaseAmount = parseFloat(purchaseAmountInput.value);
+        const downPayment = parseFloat(downPaymentInput.value);
+        let annualInterestRate = parseFloat(interestRateInput.value) / 100;
+        const mortgageTermYears = parseFloat(mortgageTermInput.value);
+        const paymentInterval = paymentIntervalSelect.value;
 
-    if (
-      isNaN(purchaseAmount) ||
-      isNaN(downPayment) ||
-      isNaN(annualInterestRate) ||
-      isNaN(mortgageTermYears) ||
-      purchaseAmount <= 0
-    ) {
-      displayMonthlyPayment.textContent = "$0.00";
-      displayTotalPayments.textContent = "0";
-      displayTotalAmountPaid.textContent = "$0.00";
-      displayTotalInterestPaid.textContent = "$0.00";
-      updateChart([], [], [], []);
-      return;
+        if (
+            isNaN(purchaseAmount) ||
+            isNaN(downPayment) ||
+            isNaN(annualInterestRate) ||
+            isNaN(mortgageTermYears) ||
+            purchaseAmount <= 0
+        ) {
+            displayMonthlyPayment.textContent = "$0.00";
+            displayTotalPayments.textContent = "0";
+            displayTotalAmountPaid.textContent = "$0.00";
+            displayTotalInterestPaid.textContent = "$0.00";
+            updateChart([], [], [], []);
+            return;
+        }
+
+        const loanAmount = purchaseAmount - downPayment;
+
+        let paymentsPerYear;
+        switch (paymentInterval) {
+            case "monthly":
+                paymentsPerYear = 12;
+                break;
+            case "semi-monthly":
+                paymentsPerYear = 24; // 2 payments per month * 12 months
+                break;
+            case "bi-weekly":
+                paymentsPerYear = 26;
+                break;
+            case "weekly":
+                paymentsPerYear = 52;
+                break;
+            default:
+                paymentsPerYear = 12;
+        }
+
+        const periodicInterestRate = annualInterestRate / paymentsPerYear;
+        const numberOfPayments = mortgageTermYears * paymentsPerYear;
+
+        let periodicPayment;
+        if (periodicInterestRate === 0) {
+            periodicPayment = loanAmount / numberOfPayments;
+        } else {
+            periodicPayment =
+                (loanAmount *
+                    (periodicInterestRate *
+                        Math.pow(1 + periodicInterestRate, numberOfPayments))) /
+                (Math.pow(1 + periodicInterestRate, numberOfPayments) - 1);
+        }
+
+        const totalAmountPaid = periodicPayment * numberOfPayments;
+        const totalInterestPaid = totalAmountPaid - loanAmount;
+
+        displayLoanAmount.textContent = `$${loanAmount.toFixed(2)}`;
+        displayMonthlyPayment.textContent = `$${periodicPayment.toFixed(2)}`;
+        displayInterestRate.textContent = `${(annualInterestRate * 100).toFixed(
+            2
+        )}%`;
+        displayTotalPayments.textContent = Math.round(numberOfPayments);
+        displayMortgageTerm.textContent = `${mortgageTermYears} years`;
+        displayTotalAmountPaid.textContent = `$${totalAmountPaid.toFixed(2)}`;
+        displayTotalInterestPaid.textContent = `$${totalInterestPaid.toFixed(2)}`;
+
+        const amortizationSchedule = [];
+        let remainingBalance = loanAmount;
+        let totalPrincipalPaidForChart = 0;
+        let cumulativeInterest = 0;
+
+        for (let i = 0; i <= numberOfPayments; i++) {
+            const currentBalance = remainingBalance;
+            const interestPayment = currentBalance * periodicInterestRate;
+            let principalPayment = periodicPayment - interestPayment;
+
+            if (i === numberOfPayments) {
+                principalPayment = currentBalance;
+            }
+            if (principalPayment < 0) principalPayment = 0;
+
+            remainingBalance -= principalPayment;
+            totalPrincipalPaidForChart += principalPayment;
+            cumulativeInterest += interestPayment;
+
+            amortizationSchedule.push({
+                period: i,
+                balance: remainingBalance,
+                interestPaid: interestPayment,
+                principalPaid: principalPayment,
+                equity: downPayment + totalPrincipalPaidForChart,
+                cumulativeInterest: cumulativeInterest,
+            });
+        }
+
+        const chartLabels = [];
+        const chartDebtData = [];
+        const chartInterestData = [];
+        const chartEquityData = [];
+
+        const intervalYears = 2.5;
+        const totalYears = mortgageTermYears;
+
+        for (let year = 0; year <= totalYears; year += intervalYears) {
+            const targetPaymentIndex = Math.round(year * paymentsPerYear);
+            const dataPoint =
+                amortizationSchedule[Math.min(targetPaymentIndex, numberOfPayments)];
+
+            if (dataPoint) {
+                chartLabels.push(year.toFixed(1));
+                chartDebtData.push(dataPoint.balance);
+                chartInterestData.push(dataPoint.cumulativeInterest);
+                chartEquityData.push(dataPoint.equity);
+            }
+        }
+
+        updateChart(chartLabels, chartDebtData, chartInterestData, chartEquityData);
     }
 
-    const loanAmount = purchaseAmount - downPayment;
+    function updateChart(labels, debtData, interestData, equityData) {
+        if (amortizationChart) {
+            amortizationChart.destroy();
+        }
 
-    let paymentsPerYear;
-    switch (paymentInterval) {
-      case "monthly":
-        paymentsPerYear = 12;
-        break;
-      case "semi-monthly":
-        paymentsPerYear = 24; // 2 payments per month * 12 months
-        break;
-      case "bi-weekly":
-        paymentsPerYear = 26;
-        break;
-      case "weekly":
-        paymentsPerYear = 52;
-        break;
-      default:
-        paymentsPerYear = 12;
+        amortizationChart = new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: "Debt",
+                        data: debtData,
+                        borderColor: "red",
+                        backgroundColor: "rgba(255, 0, 0, 0.1)",
+                        fill: false,
+                        pointRadius: 3,
+                        pointBackgroundColor: "red",
+                        pointBorderColor: "red",
+                        tension: 0.1,
+                    },
+                    {
+                        label: "Interest",
+                        data: interestData,
+                        borderColor: "orange",
+                        backgroundColor: "rgba(255, 165, 0, 0.1)",
+                        fill: false,
+                        pointRadius: 3,
+                        pointBackgroundColor: "orange",
+                        pointBorderColor: "orange",
+                        tension: 0.1,
+                    },
+                    {
+                        label: "Equity",
+                        data: equityData,
+                        borderColor: "green",
+                        backgroundColor: "rgba(0, 128, 0, 0.1)",
+                        fill: false,
+                        pointRadius: 3,
+                        pointBackgroundColor: "green",
+                        pointBorderColor: "green",
+                        tension: 0.1,
+                    },
+                ],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: "Years",
+                            font: {
+                                size: 14,
+                                family: "Mukta",
+                            },
+                            color: "#555",
+                        },
+                        ticks: {
+                            font: {
+                                family: "Mukta",
+                            },
+                            color: "#555",
+                        },
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: "Amount ($)",
+                            font: {
+                                size: 14,
+                                family: "Mukta",
+                            },
+                            color: "#555",
+                        },
+                        ticks: {
+                            callback: function (value) {
+                                return "$" + value.toLocaleString();
+                            },
+                            font: {
+                                family: "Mukta",
+                            },
+                            color: "#555",
+                        },
+                        min: 0,
+                    },
+                },
+                plugins: {
+                    legend: {
+                        position: "top",
+                        labels: {
+                            font: {
+                                size: 14,
+                                family: "Mukta",
+                            },
+                            color: "#333",
+                            usePointStyle: true,
+                            boxWidth: 10,
+                        },
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                let label = context.dataset.label || "";
+                                if (label) {
+                                    label += ": ";
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += new Intl.NumberFormat("en-US", {
+                                        style: "currency",
+                                        currency: "USD",
+                                    }).format(context.parsed.y);
+                                }
+                                return label;
+                            },
+                        },
+                    },
+                },
+            },
+        });
     }
 
-    const periodicInterestRate = annualInterestRate / paymentsPerYear;
-    const numberOfPayments = mortgageTermYears * paymentsPerYear;
+    calculateMortgage();
 
-    let periodicPayment;
-    if (periodicInterestRate === 0) {
-      periodicPayment = loanAmount / numberOfPayments;
-    } else {
-      periodicPayment =
-        (loanAmount *
-          (periodicInterestRate *
-            Math.pow(1 + periodicInterestRate, numberOfPayments))) /
-        (Math.pow(1 + periodicInterestRate, numberOfPayments) - 1);
-    }
-
-    const totalAmountPaid = periodicPayment * numberOfPayments;
-    const totalInterestPaid = totalAmountPaid - loanAmount;
-
-    displayLoanAmount.textContent = `$${loanAmount.toFixed(2)}`;
-    displayMonthlyPayment.textContent = `$${periodicPayment.toFixed(2)}`;
-    displayInterestRate.textContent = `${(annualInterestRate * 100).toFixed(
-      2
-    )}%`;
-    displayTotalPayments.textContent = Math.round(numberOfPayments);
-    displayMortgageTerm.textContent = `${mortgageTermYears} years`;
-    displayTotalAmountPaid.textContent = `$${totalAmountPaid.toFixed(2)}`;
-    displayTotalInterestPaid.textContent = `$${totalInterestPaid.toFixed(2)}`;
-
-    const amortizationSchedule = [];
-    let remainingBalance = loanAmount;
-    let totalPrincipalPaidForChart = 0;
-    let cumulativeInterest = 0;
-
-    for (let i = 0; i <= numberOfPayments; i++) {
-      const currentBalance = remainingBalance;
-      const interestPayment = currentBalance * periodicInterestRate;
-      let principalPayment = periodicPayment - interestPayment;
-
-      if (i === numberOfPayments) {
-        principalPayment = currentBalance;
-      }
-      if (principalPayment < 0) principalPayment = 0;
-
-      remainingBalance -= principalPayment;
-      totalPrincipalPaidForChart += principalPayment;
-      cumulativeInterest += interestPayment;
-
-      amortizationSchedule.push({
-        period: i,
-        balance: remainingBalance,
-        interestPaid: interestPayment,
-        principalPaid: principalPayment,
-        equity: downPayment + totalPrincipalPaidForChart,
-        cumulativeInterest: cumulativeInterest,
-      });
-    }
-
-    const chartLabels = [];
-    const chartDebtData = [];
-    const chartInterestData = [];
-    const chartEquityData = [];
-
-    const intervalYears = 2.5;
-    const totalYears = mortgageTermYears;
-
-    for (let year = 0; year <= totalYears; year += intervalYears) {
-      const targetPaymentIndex = Math.round(year * paymentsPerYear);
-      const dataPoint =
-        amortizationSchedule[Math.min(targetPaymentIndex, numberOfPayments)];
-
-      if (dataPoint) {
-        chartLabels.push(year.toFixed(1));
-        chartDebtData.push(dataPoint.balance);
-        chartInterestData.push(dataPoint.cumulativeInterest);
-        chartEquityData.push(dataPoint.equity);
-      }
-    }
-
-    updateChart(chartLabels, chartDebtData, chartInterestData, chartEquityData);
-  }
-
-  function updateChart(labels, debtData, interestData, equityData) {
-    if (amortizationChart) {
-      amortizationChart.destroy();
-    }
-
-    amortizationChart = new Chart(ctx, {
-      type: "line",
-      data: {
-        labels: labels,
-        datasets: [
-          {
-            label: "Debt",
-            data: debtData,
-            borderColor: "red",
-            backgroundColor: "rgba(255, 0, 0, 0.1)",
-            fill: false,
-            pointRadius: 3,
-            pointBackgroundColor: "red",
-            pointBorderColor: "red",
-            tension: 0.1,
-          },
-          {
-            label: "Interest",
-            data: interestData,
-            borderColor: "orange",
-            backgroundColor: "rgba(255, 165, 0, 0.1)",
-            fill: false,
-            pointRadius: 3,
-            pointBackgroundColor: "orange",
-            pointBorderColor: "orange",
-            tension: 0.1,
-          },
-          {
-            label: "Equity",
-            data: equityData,
-            borderColor: "green",
-            backgroundColor: "rgba(0, 128, 0, 0.1)",
-            fill: false,
-            pointRadius: 3,
-            pointBackgroundColor: "green",
-            pointBorderColor: "green",
-            tension: 0.1,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          x: {
-            title: {
-              display: true,
-              text: "Years",
-              font: {
-                size: 14,
-                family: "Mukta",
-              },
-              color: "#555",
-            },
-            ticks: {
-              font: {
-                family: "Mukta",
-              },
-              color: "#555",
-            },
-          },
-          y: {
-            title: {
-              display: true,
-              text: "Amount ($)",
-              font: {
-                size: 14,
-                family: "Mukta",
-              },
-              color: "#555",
-            },
-            ticks: {
-              callback: function (value) {
-                return "$" + value.toLocaleString();
-              },
-              font: {
-                family: "Mukta",
-              },
-              color: "#555",
-            },
-            min: 0,
-          },
-        },
-        plugins: {
-          legend: {
-            position: "top",
-            labels: {
-              font: {
-                size: 14,
-                family: "Mukta",
-              },
-              color: "#333",
-              usePointStyle: true,
-              boxWidth: 10,
-            },
-          },
-          tooltip: {
-            callbacks: {
-              label: function (context) {
-                let label = context.dataset.label || "";
-                if (label) {
-                  label += ": ";
-                }
-                if (context.parsed.y !== null) {
-                  label += new Intl.NumberFormat("en-US", {
-                    style: "currency",
-                    currency: "USD",
-                  }).format(context.parsed.y);
-                }
-                return label;
-              },
-            },
-          },
-        },
-      },
-    });
-  }
-
-  calculateMortgage();
-
-  purchaseAmountInput.addEventListener("input", calculateMortgage);
-  downPaymentInput.addEventListener("input", calculateMortgage);
-  interestRateInput.addEventListener("input", calculateMortgage);
-  mortgageTermInput.addEventListener("input", calculateMortgage);
-  paymentIntervalSelect.addEventListener("change", calculateMortgage);
-  calculateBtn.addEventListener("click", calculateMortgage);
+    purchaseAmountInput.addEventListener("input", calculateMortgage);
+    downPaymentInput.addEventListener("input", calculateMortgage);
+    interestRateInput.addEventListener("input", calculateMortgage);
+    mortgageTermInput.addEventListener("input", calculateMortgage);
+    paymentIntervalSelect.addEventListener("change", calculateMortgage);
+    calculateBtn.addEventListener("click", calculateMortgage);
 });
 
 // JavaScript to trigger the animation when the element is visible in the viewport
 
 // JavaScript to trigger the animation when the element is visible in the viewport
-document.addEventListener('DOMContentLoaded', function() {
-  const buttonsSection = document.querySelector('.buttons-section');
-  const statsSection = document.querySelector('.stats-section'); // Assuming .stats-section will have .animate-stats-bottom
+document.addEventListener('DOMContentLoaded', function () {
+    const buttonsSection = document.querySelector('.buttons-section');
+    const statsSection = document.querySelector('.stats-section'); // Assuming .stats-section will have .animate-stats-bottom
 
-  const observerOptions = {
-    threshold: 0.5
-  }
+    const observerOptions = {
+        threshold: 0.5
+    }
 
-  // Observer for .buttons-section
-  const buttonsObserver = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible');
-        observer.unobserve(entry.target);
-      }
+    // Observer for .buttons-section
+    const buttonsObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    if (buttonsSection) {
+        buttonsObserver.observe(buttonsSection);
+    }
+
+
+    const statsObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+
+    const elementsToAnimateStats = document.querySelectorAll('.animate-stats-bottom');
+    elementsToAnimateStats.forEach(element => {
+        statsObserver.observe(element);
     });
-  }, observerOptions);
-
-  if (buttonsSection) {
-    buttonsObserver.observe(buttonsSection);
-  }
-
-  
-  const statsObserver = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, observerOptions);
-
-
-  const elementsToAnimateStats = document.querySelectorAll('.animate-stats-bottom');
-  elementsToAnimateStats.forEach(element => {
-    statsObserver.observe(element);
-  });
 });
