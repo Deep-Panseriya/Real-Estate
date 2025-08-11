@@ -28,7 +28,7 @@
   color: #fff;
   margin-bottom: 1.6rem;
   line-height: 1.15;
-  font-family: "DM Serif Text", serif;
+  font-family: 'DM Serif Text', serif;
   font-weight: 100;
   padding-top: -10rem;
 }
@@ -41,7 +41,7 @@
   margin-bottom: 20px;
   margin-right: 1.4rem;
   color: #fff;
-  font-family: "Mukta", sans-serif;
+  font-family: 'Mukta', sans-serif;
   font-weight: 100;
 }
 
@@ -50,7 +50,7 @@
   font-size: 17px !important;
   color: #fff;
   line-height: 26px !important;
-  font-family: "Mukta", sans-serif;
+  font-family: 'Mukta', sans-serif;
 }
 
 /**************************/
@@ -75,7 +75,7 @@
   background-color: #390943;
   color: #fff;
   font-size: 16px;
-  font-family: "Mukta", serif;
+  font-family: 'Mukta', serif;
   font-weight: 500;
   border: 1px solid #fff;
   text-decoration: none;
@@ -86,7 +86,7 @@
   background-color: #fff;
   color: #390943;
   font-size: 16px;
-  font-family: "Mukta", serif;
+  font-family: 'Mukta', serif;
   font-weight: 500;
   border: 1px solid #390943;
   text-decoration: none;
@@ -101,6 +101,7 @@
   align-items: center;
   padding: 0 6rem;
 }
+
 .social-icons-columns .social-icons {
   display: flex;
   flex-direction: column;
@@ -133,9 +134,11 @@
   max-width: 700px;
   margin-left: 3rem;
 }
+
 .awards-section {
   display: flex;
   justify-content: flex-end;
+  overflow: hidden;
 }
 
 .award-item {
@@ -148,9 +151,19 @@
   margin-top: 5rem;
 }
 
+@keyframes rightToLeft {
+  0% {
+    transform: translateX(200px);
+  }
+  100% {
+    transform: translateX(-160px);
+  }
+}
+
 /**************************/
 /* every-move-section */
 /**************************/
+
 .every-move-section {
   width: 100%;
   padding: 15rem 0 0 0;
@@ -291,7 +304,7 @@
 .communities-content-left h3 {
   font-size: var(--text-size14);
   line-height: 1.2;
-  font-family: "DM Serif Text", serif;
+  font-family: 'DM Serif Text', serif;
   font-weight: 300;
 }
 
@@ -344,7 +357,7 @@
   margin-bottom: 1.2rem;
   color: var(--color-btn-primary);
   margin-bottom: 1rem;
-  font-family: "DM Serif Text", serif;
+  font-family: 'DM Serif Text', serif;
   font-weight: 600;
 }
 
@@ -353,7 +366,7 @@
   color: #5c5c5c;
   margin-top: 2rem;
   margin-bottom: 2rem;
-  font-family: "Mukta", sans-serif;
+  font-family: 'Mukta', sans-serif;
 }
 
 .sell-button {
@@ -366,7 +379,7 @@
   text-decoration: none;
   transition: background-color 0.3s ease, transform 0.2s ease;
   text-align: center;
-  font-family: "Mukta", sans-serif;
+  font-family: 'Mukta', sans-serif;
   color: #fffdf9;
   font-weight: 300;
   justify-content: center;
@@ -471,7 +484,7 @@
 }
 
 .horizontal-border::after {
-  content: "";
+  content: '';
   display: block;
   width: 90%;
   height: 1px;
@@ -479,6 +492,7 @@
   padding: 0 1.2rem;
   margin: auto;
 }
+
 /**************************/
 /* home-evaluation-section-section */
 /**************************/
@@ -530,7 +544,7 @@
 
 .evaluation-content h6 {
   font-size: var(--text-size6);
-  font-family: "Mukta", sans-serif;
+  font-family: 'Mukta', sans-serif;
   line-height: 1.5;
   margin-top: 2rem;
   font-weight: 300;
@@ -540,7 +554,7 @@
   font-size: var(--text-size13);
   margin-bottom: 1.5rem;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-  font-family: "DM Serif Text", serif;
+  font-family: 'DM Serif Text', serif;
   line-height: 1.2;
   font-weight: 400;
 }
@@ -550,7 +564,7 @@
   margin-bottom: 1.5rem;
   color: #e5e7eb;
   line-height: 2.5rem;
-  font-family: "Mukta", sans-serif;
+  font-family: 'Mukta', sans-serif;
   font-weight: 300;
 }
 
@@ -561,7 +575,7 @@
   border-radius: 1rem;
   text-decoration: none;
   display: inline-block;
-  font-family: "Mukta", sans-serif;
+  font-family: 'Mukta', sans-serif;
   font-size: 1.8rem;
   transition: transform 0.3s ease-in-out;
   text-align: center;
@@ -702,6 +716,7 @@
 .message-grid {
   grid-column: 1 / 3;
 }
+
 .your-move-image img {
   width: 100%;
   height: auto;
@@ -752,9 +767,9 @@
   margin-top: 1rem;
 }
 
-.form-group input[type="text"],
-.form-group input[type="email"],
-.form-group input[type="tel"],
+.form-group input[type='text'],
+.form-group input[type='email'],
+.form-group input[type='tel'],
 .form-group textarea {
   width: 100%;
   padding-top: 1.2rem;
@@ -917,6 +932,7 @@ Mac-book style
     margin-top: 2rem;
     margin-bottom: 1.4rem;
   }
+
   .awards-section {
     justify-content: center;
     margin-bottom: 2rem;
@@ -968,6 +984,7 @@ Large Tablet Breakpoint (e.g., 1024px):
   .sell-button {
     width: 100%;
   }
+
   .hero-icons-container {
     display: grid;
     grid-template-columns: 1fr;
@@ -1048,6 +1065,7 @@ Large Tablet Breakpoint (e.g., 1024px):
   .benefit-item {
     gap: 1rem;
   }
+
   .benefit-text h1 {
     font-size: var(--text-size5);
   }
@@ -1060,6 +1078,7 @@ Large Tablet Breakpoint (e.g., 1024px):
   .sell-padding-left {
     padding: 1rem 0;
   }
+
   .sell-padding,
   .right-margin {
     padding: 0;
@@ -1078,6 +1097,7 @@ Large Tablet Breakpoint (e.g., 1024px):
   .your-move-grid {
     padding: 0 2.5rem !important;
   }
+
   .your-move-section {
     padding-top: 2rem;
     padding-bottom: 2rem;
@@ -1119,6 +1139,7 @@ Large Tablet Breakpoint (e.g., 1024px):
   .hero-secondary-btn-hide {
     display: none;
   }
+
   .grid-image-1,
   .grid-image-2 {
     grid-column: 1 / -1;
@@ -1203,6 +1224,7 @@ Large Tablet Breakpoint (e.g., 1024px):
   .sell-button {
     font-size: 1.5rem;
   }
+
   .evaluation-content {
     margin-left: 0;
     padding: 2rem 0;
